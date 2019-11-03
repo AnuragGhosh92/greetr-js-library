@@ -6,6 +6,25 @@
         return new Greetr.init(firstname, lastname, language);
     }
     
+    // variables that are needed in the library but are not exposed to the outside world can be declared like this.
+    var supportedLangs = ['en', 'es'];
+    
+    // kept as objects instead of arrays so as to access them as name-value pair.
+    var greetings = {
+        en: 'Hello',
+        es: 'Hola'
+    };
+    
+    var formalGreetings = {
+        en: 'Greetings',
+        es: 'Saludos',
+    };
+    
+    var logMessages = {
+        en: 'Logged in',
+        es: 'Inicio sesion'
+    }
+    
     // This object will hold the properties of the Greetr object, and is equal to function constructor's prototype property.
     Greetr.prototype = {};
     
