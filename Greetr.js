@@ -2,8 +2,8 @@
 
 (function (global, $) {
     
-    var Greetr = function(firstname, lastname, language) {
-        return new Greetr.init(firstname, lastname, language);
+    var Greetr = function(firstName, lastName, language) {
+        return new Greetr.init(firstName, lastName, language);
     }
     
     // variables that are needed in the library but are not exposed to the outside world can be declared like this.
@@ -26,16 +26,66 @@
     }
     
     // This object will hold the properties of the Greetr object, and is equal to function constructor's prototype property.
-    Greetr.prototype = {};
+    Greetr.prototype = {
+        
+        fullName : function() {
+            return this.firstName + ' ' + this.lastName;
+        },
+        
+        validate : function() { 
+            if(supportedLangs.indexOf(this.language) === -1){
+                throw 'Invalid Language requested';
+            }
+        },
+        
+        greeting : function() {
+            return greetings[this.language] + ' ' + this.firstName + '!';
+        },
+        
+        formalGreeting: function() {
+            return formalGreetings[this.language] + ', ' + this.fullName();
+        },
+        
+        greet: function(formal) { 
+            var msg;
+            
+            if(formal){
+                msg = this.formalGreeting();
+            }else{
+                msg = this.greeting();
+            }
+            
+            if(console){
+                console.log(msg);
+            }
+            
+            // 'this' refers to the calling object at execution time. Returning it back makes the method chainable
+            return this;
+        },
+        
+        log: function() {
+            if(console){
+                console.log(logMessages[this.language] + ': ' + this.fullName());
+            }
+        },
+        
+        setLang: function(lang) {
+            if(lang){
+                this.language = lang;
+                this.validate();
+            }
+            return this;
+        }
+    };
     
     // the function constructor that constructs the Greetr object
-    Greetr.init = function(firstname, lastname, language){
+    Greetr.init = function(firstName, lastName, language){
         
         var self=this;
         
         // setup default values for firstname, lastname, language.
-        self.firstname = firstname || '';
-        self.lastname = lastname || '';
+        self.firstName = firstName || '';
+        self.lastName = lastName || '';
         self.language = language || 'en';
         
     }
