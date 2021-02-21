@@ -7,25 +7,29 @@
     }
     
     // variables that are needed in the library but are not exposed to the outside world can be declared like this.
+    // hidden within the scope of the IIFE and never directly accessible
     var supportedLangs = ['en', 'es'];
     
+    // informal greetings
     // kept as objects instead of arrays so as to access them as name-value pair.
     var greetings = {
         en: 'Hello',
         es: 'Hola'
     };
     
+    // formal greetings
     var formalGreetings = {
         en: 'Greetings',
         es: 'Saludos',
     };
     
+    // Logger messages
     var logMessages = {
         en: 'Logged in',
         es: 'Inicio sesion'
     }
     
-    // This object will hold the properties of the Greetr object, and is equal to function constructor's prototype property.
+    // This object (Greetr's prototype) holds the methods, to save memory space.
     Greetr.prototype = {
         
         fullName : function() {
@@ -75,6 +79,19 @@
                 this.validate();
             }
             return this;
+        },
+        
+        HTMLGreeting: function(selector, formal){
+            if(!$){
+                throw 'jQuery is not loaded!';
+            }
+            
+            if(!selector){
+                throw 'jQuery selector missing';
+            }
+            var msg = formal ? this.formalGreeting() : this.greeting();
+            $(selector).html(msg);
+            return this;
         }
     };
     
@@ -88,6 +105,7 @@
         self.lastName = lastName || '';
         self.language = language || 'en';
         
+        self.validate();
     }
     
     // the prototype of the function constructor (Greetr.init) has been assigned the object Greetr.prototype.
